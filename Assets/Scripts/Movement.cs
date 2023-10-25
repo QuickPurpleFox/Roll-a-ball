@@ -41,7 +41,7 @@ public class Movement : MonoBehaviour
 
         Vector3 movement = new Vector3(horizontal, vSpeed, pitch);
 
-        rigidbody.AddForce(movement.normalized * speed);
+        rigidbody.AddForce(movement.normalized + Camera.main.transform.forward * speed);
     }
 
     private void OnCollisionEnter(Collision collision)

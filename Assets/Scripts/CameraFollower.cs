@@ -26,10 +26,19 @@ public class CameraFollower : MonoBehaviour
             rotationX -= 5 * Time.deltaTime;
             rotationZ -= 5 * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.E))
+        else if (Input.GetKey(KeyCode.E))
         {
             rotationX += 5 * Time.deltaTime;
             rotationZ += 5 * Time.deltaTime;
+        }
+
+        if(rotationX >= 360)
+        {
+            rotationX = 0;
+        }
+        if (rotationZ >= 360)
+        {
+            rotationZ = 0;
         }
 
         rotation = new Vector3 (Mathf.Cos(rotationZ), 0, Mathf.Sin(rotationX));
