@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,6 +6,9 @@ using UnityEngine;
 
 public class CollectPoints : MonoBehaviour
 {
+    public delegate void AddPoints(GameObject sender, EventArgs e);
+    public static event AddPoints AddPointEvent;
+
     // Update is called once per frame
     void Update()
     {
@@ -14,10 +18,8 @@ public class CollectPoints : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            AddPointEvent?.Invoke(gameObject, new EventArgs());
             this.gameObject.SetActive(false);
-
-            other.gameObject.GetComponent<Movement>().AddPoints();
-            //Movement.Instance.AddPoints();
         }
     }
 }

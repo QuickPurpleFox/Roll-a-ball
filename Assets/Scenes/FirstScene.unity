@@ -1459,6 +1459,17 @@ Transform:
   - {fileID: 1461987739}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &383673501 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8690145389051138679, guid: 391b2ddd9a891af488eceefff9033ed3, type: 3}
+  m_PrefabInstance: {fileID: 7841203237885293284}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e852792d2f4e3c48ad7328b6e79ccd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &406917942
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,6 +2312,7 @@ GameObject:
   - component: {fileID: 901877336}
   - component: {fileID: 901877335}
   - component: {fileID: 901877334}
+  - component: {fileID: 901877337}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2358,6 +2370,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &901877337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901877333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2320caccd23bbe64db1984fc9049b86f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 383673501}
+  pointText: {fileID: 2129501334}
+  winText: {fileID: 535600432}
 --- !u!1 &948849739
 GameObject:
   m_ObjectHideFlags: 0
@@ -3550,6 +3577,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6234647175631909999, guid: e12249b7edc09694cb6b563b579d09a2, type: 3}
+      propertyPath: m_TagString
+      value: Points
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4526,6 +4557,10 @@ PrefabInstance:
     - target: {fileID: 6234647175631909999, guid: e12249b7edc09694cb6b563b579d09a2, type: 3}
       propertyPath: m_Name
       value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234647175631909999, guid: e12249b7edc09694cb6b563b579d09a2, type: 3}
+      propertyPath: m_TagString
+      value: Points
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
