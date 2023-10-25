@@ -9,15 +9,12 @@ using System;
 
 public class Movement : MonoBehaviour
 {
-    public Rigidbody rigidbody;
+    public new Rigidbody rigidbody;
     public float speed = 1f;
     public float gravity = 9.8f;
 
     [SerializeField]
-    private int points = 0;
-    [SerializeField]
     private float vSpeed = 0f;
-    private Quaternion rotateValue;
     [SerializeField]
     private bool isGrounded = true;
 
