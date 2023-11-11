@@ -1,11 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
-using System;
 
 public class Movement : MonoBehaviour
 {
@@ -15,22 +8,29 @@ public class Movement : MonoBehaviour
 
     [SerializeField]
     private float vSpeed = 0f;
-    [SerializeField]
-    private bool isGrounded = true;
+    private bool _isGrounded = true;
 
-    // Update is called once per frame
-    void Update()
+    private float _groundCheckDistance;
+    private float _bufferDistance = 0.00001f;
+    private Vector3 _upSide;
+
+    void Start()
+    {
+        _upSide = GetComponent<Transform>().up;
+        _groundCheckDistance = GetComponent<SphereCollider>().radius + _bufferDistance;
+    }
+    void FixedUpdate()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float pitch = Input.GetAxisRaw("Vertical");
 
 
-        if (isGrounded)
+        if (_isGrounded)
         {
             vSpeed = 0f;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                isGrounded = false;
+                _isGrounded = false;
                 vSpeed = 0.5f * speed;
             }
         }
@@ -41,23 +41,24 @@ public class Movement : MonoBehaviour
 
         Vector3 movement = new Vector3(horizontal, vSpeed, pitch);
 
-        rigidbody.AddForce(movement.normalized + Camera.main.transform.forward * speed);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-
-        if(collision.gameObject.tag == "Ground")
+        if (_isGrounded)
         {
-            isGrounded = true;
+            rigidbody.AddForce(Camera.main.transform.TransformDirection(movement.normalized * speed));
         }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
+        else
         {
-            isGrounded = false;
+            rigidbody.AddForce(movement.normalized * speed);
         }
-    }
+
+        RaycastHit ray;
+        if (Physics.Raycast(transform.position, -_upSide, out ray, _groundCheckDistance))
+        {
+            _isGrounded = true;
+        }
+        else
+        {
+            _isGrounded = false;
+        }
+        Debug.DrawRay(transform.position, -_upSide * _groundCheckDistance, Color.green, 5);
+    }  
 }
