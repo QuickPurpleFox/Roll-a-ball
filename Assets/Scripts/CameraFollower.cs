@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -6,44 +7,46 @@ public class CameraFollower : MonoBehaviour
 {
     public Transform target;
 
-    private Vector3 offset;// = new Vector3(0f, 1.7f, -4f);
+    private Vector3 _offset;// = new Vector3(0f, 1.7f, -4f);
 
-    private float rotationX = 0f;
-    private float rotationZ = 0f;
+    private float _rotationX = 0f;
+    private float _rotationZ = 0f;
 
-    private Vector3 rotation = new Vector3(0,0,0);
-    private Vector3 height = new Vector3(0, 0, 0);
+    private Vector3 _rotation = new Vector3(0,0,0);
+    private Vector3 _height = new Vector3(0, 0, 0);
+    
+    private float _lerpSpeed = 5.0f;
 
     private void Start()
     {
-        offset = GetComponent<Transform>().position - target.position;
-        height = new Vector3(0, offset.y, 0);
+        _offset = GetComponent<Transform>().position - target.position;
+        _height = new Vector3(0, _offset.y, 0);
     }
     void LateUpdate()
     {
         if (Input.GetKey(KeyCode.Q))
         {
-            rotationX -= 5 * Time.deltaTime;
-            rotationZ -= 5 * Time.deltaTime;
+            _rotationX -= 5 * Time.deltaTime;
+            _rotationZ -= 5 * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            rotationX += 5 * Time.deltaTime;
-            rotationZ += 5 * Time.deltaTime;
+            _rotationX += 5 * Time.deltaTime;
+            _rotationZ += 5 * Time.deltaTime;
         }
 
-        if(rotationX >= 360)
+        if(_rotationX >= 360)
         {
-            rotationX = 0;
+            _rotationX = 0;
         }
-        if (rotationZ >= 360)
+        if (_rotationZ >= 360)
         {
-            rotationZ = 0;
+            _rotationZ = 0;
         }
 
-        rotation = new Vector3 (Mathf.Cos(rotationZ), 0, Mathf.Sin(rotationX));
+        _rotation = new Vector3 (Mathf.Cos(_rotationZ), 0, Mathf.Sin(_rotationX));
 
-        transform.position = target.position + (rotation * offset.z) + height;
+        transform.position = target.position + (_rotation * _offset.z) + _height;
   
 
         transform.LookAt(target);
@@ -65,4 +68,11 @@ public class CameraFollower : MonoBehaviour
      * lerp camera in Z direction away from playerObject to maximum distance from player
      * lerp playerObject material opacity to 100%
      */
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collision detected");
+        Vector3 directionToPlayer = (target.position - transform.position).normalized;
+        Vector3 targetPosition = target.position - directionToPlayer * 1f;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, _lerpSpeed * Time.deltaTime);
+    }
 }

@@ -1,50 +1,55 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameHandler : MonoBehaviour
 {
-
-    [SerializeField]
-    Movement player;
-
-    private int maxScore;
-    private int score;
-    GameObject[] collectibleTable;
+    private int _maxScore;
+    private int _score;
+    GameObject[] _collectibleTable;
 
     public TMP_Text pointText;
     public TMP_Text winText;
+
+    public Animator doorsAnimator;
 
     //subskrybcja do AddPointEvent podczas startu sceny
     private void OnEnable()
     {
         CollectPoints.AddPointEvent += PointsReceiver;
+        Boot.ButtonPressedEvent += OpeningDoors;
+        _collectibleTable = GameObject.FindGameObjectsWithTag("Points");
     }
 
     //zliczenie punktów oraz ustawienie UI
     private void Start()
     {
-        collectibleTable = GameObject.FindGameObjectsWithTag("Points");
-        maxScore = collectibleTable.Length;
-        winText.gameObject.SetActive(false);
+        _maxScore = _collectibleTable.Length;
+        if (winText != null)
+        {
+            winText.gameObject.SetActive(false);
+        }
+        pointText.text = "Score: 0/" + _maxScore;
     }
     
     private void PointsReceiver(GameObject sender, EventArgs e)
     {
-        score++;
-        Debug.Log("---Received---");
-        Debug.Log(score + "/" + maxScore);
-        if (score / maxScore >= 1)
+        _score++;
+        if (_score / _maxScore >= 1)
         {
-            
-            winText.gameObject.SetActive(true);
-            SceneManager.LoadScene("SecondScene");
+            if (winText != null)
+            {
+                winText.gameObject.SetActive(true);
+            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+    }
 
+    private void OpeningDoors(GameObject sender, EventArgs e)
+    {
+        doorsAnimator.SetTrigger("open");
+        doorsAnimator.SetTrigger("open");
     }
 
     //odsubskrybowanie
