@@ -19,7 +19,18 @@ public class GameHandler : MonoBehaviour
     {
         CollectPoints.AddPointEvent += PointsReceiver;
         Boot.ButtonPressedEvent += OpeningDoors;
+        
+        
         _collectibleTable = GameObject.FindGameObjectsWithTag("Points");
+        var doorsCollection = GameObject.FindGameObjectsWithTag("Doors");
+        if (doorsCollection.Length > 0)
+        {
+            doorsAnimator = doorsCollection[0].GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("[ERROR] 0 tagów drzwi");
+        }
     }
 
     //zliczenie punktów oraz ustawienie UI
@@ -36,6 +47,7 @@ public class GameHandler : MonoBehaviour
     private void PointsReceiver(GameObject sender, EventArgs e)
     {
         _score++;
+        pointText.text = "Score: " + _score + "/" + _maxScore;
         if (_score / _maxScore >= 1)
         {
             if (winText != null)
@@ -49,12 +61,12 @@ public class GameHandler : MonoBehaviour
     private void OpeningDoors(GameObject sender, EventArgs e)
     {
         doorsAnimator.SetTrigger("open");
-        doorsAnimator.SetTrigger("open");
     }
 
     //odsubskrybowanie
     private void OnDisable()
     {
         CollectPoints.AddPointEvent -= PointsReceiver;
+        Boot.ButtonPressedEvent -= OpeningDoors;
     }
 }
